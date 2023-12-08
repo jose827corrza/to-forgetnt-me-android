@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.josedev.toforgetntme.domain.entity.ToDo
 import com.josedev.toforgetntme.ui.theme.ToForgetntMeTheme
 import kotlinx.coroutines.launch
 
@@ -34,6 +35,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen() {
+    val testTaskList = arrayListOf<ToDo>()
+    testTaskList.add(ToDo("testTitle","descrip",true))
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     ModalNavigationDrawer(
@@ -90,7 +93,7 @@ fun HomeScreen() {
             }
         ) {innerPadding ->
             Box (modifier = Modifier.padding(innerPadding)){
-                TasksScreen()
+                TasksScreen(testTaskList)
             }
         }
     }
