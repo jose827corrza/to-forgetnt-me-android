@@ -19,7 +19,7 @@ fun TasksScreen(
     tasksList: List<ToDo>
 ) {
     Column(
-        modifier = Modifier.fillMaxSize().padding(0.dp, 10.dp),
+        modifier = Modifier.fillMaxSize().padding(5f.dp, 10.dp),
     ) {
         LazyColumn{
             items(tasksList){
