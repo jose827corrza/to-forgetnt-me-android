@@ -29,11 +29,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.josedev.toforgetntme.navigation.routes.AppNavigation
 import com.josedev.toforgetntme.ui.theme.ToForgetntMeTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    nav: NavController
+) {
 
     var email by remember {
         mutableStateOf("")
@@ -63,25 +67,25 @@ fun LoginScreen() {
             label = { Text(text = "Password")},
             visualTransformation = PasswordVisualTransformation())
         Spacer(modifier = Modifier.height(40.dp))
-        FilledTonalButton(onClick = { logIn(email, password) }, modifier = Modifier.width(200.dp)) {
+        FilledTonalButton(onClick = { logIn(email, password, nav) }, modifier = Modifier.width(200.dp)) {
             Text(text = "Log in")
         }
-        ElevatedButton(onClick = { signUp(email, password) }, modifier = Modifier.width(200.dp)) {
+        ElevatedButton(onClick = { signUp(email, password, nav) }, modifier = Modifier.width(200.dp)) {
             Text(text = "Sign up")
         }
     }
 }
 
-fun logIn(email: String, password: String) {
-
+fun logIn(email: String, password: String, nav: NavController) {
+    nav.navigate(AppNavigation.TasksScreen().route)
 }
 
-fun signUp(email: String, password: String) {}
+fun signUp(email: String, password: String, nav: NavController) {}
 
 @Preview(showBackground = true)
 @Composable
 fun AppPreview() {
     ToForgetntMeTheme {
-        LoginScreen()
+//        LoginScreen()
     }
 }

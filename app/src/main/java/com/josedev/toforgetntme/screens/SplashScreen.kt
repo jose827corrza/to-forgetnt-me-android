@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.Image
 import androidx.compose.ui.res.painterResource
 import androidx.compose.material3.Text
+import com.josedev.toforgetntme.navigation.routes.AppNavigation
 
 @Composable
 fun SplashScreen(navController: NavController) {
@@ -24,7 +25,7 @@ fun SplashScreen(navController: NavController) {
     LaunchedEffect(key1 = true){
         delay(600)
         navController.popBackStack() // Prevents to be able to return to splash screen
-//        navController.navigate(AppScreens.AuthScreen.route)
+        navController.navigate(AppNavigation.LoginScreen().route)
     }
     Splash()
 }

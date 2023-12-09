@@ -24,17 +24,22 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.josedev.toforgetntme.domain.entity.ToDo
+import com.josedev.toforgetntme.navigation.routes.AppNavigation
 import com.josedev.toforgetntme.ui.theme.ToForgetntMeTheme
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    nav: NavController
+) {
     val testTaskList = arrayListOf<ToDo>()
     testTaskList.add(ToDo("testTitle","descrip",true))
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -54,7 +59,10 @@ fun HomeScreen() {
                         }
                     })
                 NavigationDrawerItem(
-                    label = { Text(text = "Posts") },
+                    label = { Text(
+                        text = "Posts   (Soon)",
+                        color = Color.Gray,
+                        fontWeight = FontWeight.Light) },
                     selected = false,
                     onClick = {
                         scope.launch {
@@ -87,13 +95,16 @@ fun HomeScreen() {
                     })
             },
             floatingActionButton = {
-                FloatingActionButton(onClick = {  }) {
+                FloatingActionButton(onClick = {
+//                    nav.navigate(AppNavigation.TodoScreen.route)
+                    nav.navigate(AppNavigation.UpsertTodoScreen("new").route)
+                }) {
                     Icon(Icons.Default.Add, contentDescription = "Add")
                 }
             }
         ) {innerPadding ->
             Box (modifier = Modifier.padding(innerPadding)){
-                TasksScreen(testTaskList)
+                TasksScreen(testTaskList, nav)
             }
         }
     }
@@ -103,6 +114,6 @@ fun HomeScreen() {
 @Composable
 fun HomePreview() {
     ToForgetntMeTheme {
-        HomeScreen()
+//        HomeScreen()
     }
 }
