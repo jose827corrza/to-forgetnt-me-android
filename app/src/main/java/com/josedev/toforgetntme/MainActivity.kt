@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.josedev.toforgetntme.navigation.AppNavigation
 import com.josedev.toforgetntme.screens.HomeScreen
 import com.josedev.toforgetntme.screens.LoginScreen
 import com.josedev.toforgetntme.ui.theme.ToForgetntMeTheme
@@ -24,8 +25,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-//                    LoginScreen()
-                    HomeScreen()
+                    AppNavigation()
                 }
             }
         }
@@ -37,6 +37,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppPreview() {
     ToForgetntMeTheme {
-        LoginScreen()
+//        LoginScreen()
     }
 }

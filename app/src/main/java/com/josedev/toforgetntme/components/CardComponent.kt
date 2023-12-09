@@ -11,7 +11,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,10 +24,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.josedev.toforgetntme.navigation.routes.AppNavigation
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CardComponent() {
+fun CardComponent(
+    nav: NavController,
+    id: String
+) {
     Card (
+        onClick = {
+                  nav.navigate(AppNavigation.UpsertTodoScreen(id).route)
+        },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         )
@@ -53,12 +64,17 @@ fun CardComponent() {
                     fontWeight = FontWeight.ExtraLight,
                     text = "Random descrip that usually it is not as long as this")
             }
-            Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete")
+            IconButton(onClick = {
+                // TODO
+                println("Click to delete")
+            }) {
+                Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete")
+            }
         }
     }
 }
 @Preview
 @Composable
 fun CardPreview() {
-    CardComponent()
+//    CardComponent()
 }

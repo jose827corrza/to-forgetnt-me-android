@@ -11,19 +11,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.josedev.toforgetntme.components.CardComponent
 import com.josedev.toforgetntme.domain.entity.ToDo
 
 @Composable
 fun TasksScreen(
-    tasksList: List<ToDo>
+    tasksList: List<ToDo>,
+    nav: NavController
 ) {
     Column(
         modifier = Modifier.fillMaxSize().padding(5f.dp, 10.dp),
     ) {
         LazyColumn{
             items(tasksList){
-                CardComponent()
+                CardComponent(nav, it.name)
             }
         }
     }

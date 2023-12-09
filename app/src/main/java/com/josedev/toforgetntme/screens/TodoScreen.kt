@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.DatePickerColors
 import com.vanpra.composematerialdialogs.datetime.date.DatePickerDefaults
@@ -42,7 +43,10 @@ import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TodoScreen() {
+fun TodoScreen(
+    nav: NavController,
+    taskId: String
+) {
     var title by remember {
         mutableStateOf("")
     }
@@ -57,19 +61,17 @@ fun TodoScreen() {
 
 
     Column(
-        modifier = Modifier.run {
-            fillMaxSize()
-                .padding(10.dp, 20.dp)
-        },
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(10.dp, 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(40.dp)
     ) {
         Text(
-            text = "Create Todo",
+            text = if(taskId != "new") "Update Todo" else "Create Todo",
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold
         )
-
         OutlinedTextField(
             label = { Text(text = "Todo Title")},
             value = title,
@@ -150,5 +152,5 @@ fun TodoScreen() {
 @Preview(showBackground = true)
 @Composable
 fun TodoScreenPreview() {
-    TodoScreen()
+//    TodoScreen()
 }
