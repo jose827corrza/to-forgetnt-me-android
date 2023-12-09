@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android") version "1.9.10"
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -80,4 +81,8 @@ dependencies {
 
     // Date picker
     implementation("io.github.vanpra.compose-material-dialogs:datetime:0.8.1-rc")
+
+    // Firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    implementation("com.google.firebase:firebase-auth")
 }
