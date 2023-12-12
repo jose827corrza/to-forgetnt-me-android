@@ -28,9 +28,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.josedev.toforgetntme.domain.entity.ToDo
 import com.josedev.toforgetntme.navigation.routes.AppNavigation
+import com.josedev.toforgetntme.presentation.LoginViewModel
+import com.josedev.toforgetntme.repository.LoginEvent
 import com.josedev.toforgetntme.ui.theme.ToForgetntMeTheme
 import kotlinx.coroutines.launch
 
@@ -38,7 +41,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    nav: NavController
+    nav: NavController,
+    loginVM: LoginViewModel = hiltViewModel()
 ) {
     val testTaskList = arrayListOf<ToDo>()
     testTaskList.add(ToDo("testTitle","descrip",true))
@@ -67,6 +71,18 @@ fun HomeScreen(
                     onClick = {
                         scope.launch {
                             drawerState.close()
+                        }
+                    })
+                NavigationDrawerItem(
+                    label = { Text(
+                        text = "Sign Out",
+                        fontWeight = FontWeight.Bold) },
+                    selected = false,
+                    onClick = {
+                        scope.launch {
+                            drawerState.close()
+                            loginVM.onEvent(LoginEvent.SignOut)
+                            nav.navigate(AppNavigation.LoginScreen().route)
                         }
                     })
             }
