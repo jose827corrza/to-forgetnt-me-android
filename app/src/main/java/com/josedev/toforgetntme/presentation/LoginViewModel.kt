@@ -1,5 +1,6 @@
 package com.josedev.toforgetntme.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.josedev.toforgetntme.domain.entity.LoginState
@@ -21,24 +22,25 @@ class LoginViewModel @Inject constructor(
 
 //
     val state: StateFlow<LoginState> = _state
-//
-    fun changeTestState(text: String) {
-        _state.value = LoginState(test= text)
-    }
+
+
     fun onEvent(event: LoginEvent) {
         when(event){
             is LoginEvent.Login -> {
                 viewModelScope.launch {
                     authenticationRepository.loginUser(event.email, event.password)
-                    val isUser = authenticationRepository.getUser()
-                    if(isUser != null){
+//
+                    if(authenticationRepository.getUser() != null){
+//                        Log.d("AuthVM", "Enter the is")
                         _state.update {
                             it.copy(
-                                user = isUser,
+                                user = authenticationRepository.getUser(),
                                 isLoading = true
                             )
                         }
+//                        Log.d("VM", state.value.toString())
                     }else{
+//                        Log.d("AuthVM", "Else caught me")
                     }
                 }
             }

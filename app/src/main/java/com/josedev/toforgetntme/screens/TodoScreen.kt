@@ -30,7 +30,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.josedev.toforgetntme.presentation.HomeViewModel
+import com.josedev.toforgetntme.repository.HomeEvent
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.DatePickerColors
 import com.vanpra.composematerialdialogs.datetime.date.DatePickerDefaults
@@ -45,7 +48,8 @@ import java.time.LocalTime
 @Composable
 fun TodoScreen(
     nav: NavController,
-    taskId: String
+    taskId: String,
+    homeVM: HomeViewModel = hiltViewModel()
 ) {
     var title by remember {
         mutableStateOf("")
@@ -107,7 +111,9 @@ fun TodoScreen(
                 Text(text = "Pick Time")
             }
         }
-        ElevatedButton(onClick = { /*TODO*/ }) {
+        ElevatedButton(onClick = {
+            homeVM.onEvent(HomeEvent.getTaskById(taskId))
+        }) {
             Text(text = "Create Todo")
         }
     }

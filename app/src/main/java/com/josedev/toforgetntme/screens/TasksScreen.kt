@@ -18,14 +18,16 @@ import com.josedev.toforgetntme.domain.entity.ToDo
 @Composable
 fun TasksScreen(
     tasksList: List<ToDo>,
-    nav: NavController
+    nav: NavController,
 ) {
     Column(
         modifier = Modifier.fillMaxSize().padding(5f.dp, 10.dp),
     ) {
-        LazyColumn{
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(15.dp)
+        ){
             items(tasksList){
-                CardComponent(nav, it.name)
+                CardComponent(nav, it)
             }
         }
     }

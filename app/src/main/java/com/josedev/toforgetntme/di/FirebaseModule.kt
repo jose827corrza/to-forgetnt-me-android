@@ -1,8 +1,10 @@
 package com.josedev.toforgetntme.di
 
 import android.content.Context
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 import com.josedev.toforgetntme.ForgetntmeApp
 import dagger.Module
 import dagger.Provides
@@ -21,6 +23,7 @@ object FirebaseModule {
     fun provideFirebaseAuth(): FirebaseAuth {
         return FirebaseAuth.getInstance()
     }
+
 
     @Singleton
     @Provides

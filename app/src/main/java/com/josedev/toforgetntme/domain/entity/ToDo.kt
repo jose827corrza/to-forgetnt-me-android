@@ -2,6 +2,9 @@ package com.josedev.toforgetntme.domain.entity
 
 data class ToDo(
     val name: String,
+    val isComplete: Boolean,
     val description: String,
-    val isComplete: Boolean
-)
+    var id: String
+){
+    constructor(): this("", false,"","")
+}

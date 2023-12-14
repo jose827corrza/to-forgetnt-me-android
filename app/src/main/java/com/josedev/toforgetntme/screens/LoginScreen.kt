@@ -1,5 +1,6 @@
 package com.josedev.toforgetntme.screens
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -43,19 +44,24 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.josedev.toforgetntme.navigation.routes.AppNavigation
+import com.josedev.toforgetntme.presentation.HomeViewModel
 import com.josedev.toforgetntme.presentation.LoginViewModel
+import com.josedev.toforgetntme.repository.HomeEvent
 import com.josedev.toforgetntme.repository.LoginEvent
 import com.josedev.toforgetntme.ui.theme.ToForgetntMeTheme
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
     nav: NavController,
-    loginViewModel: LoginViewModel = hiltViewModel()
+    loginViewModel: LoginViewModel = hiltViewModel(),
+//    homeVm: HomeViewModel = hiltViewModel()
 ) {
 
     val loginState by loginViewModel.state.collectAsState()
+    val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
     var email by remember {
@@ -99,11 +105,24 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(40.dp))
         FilledTonalButton(onClick = {
             loginViewModel.onEvent(LoginEvent.Login(email, password))
-            if(loginState.user != null){
-                nav.navigate(AppNavigation.TasksScreen().route)
-            }else {
-                Toast.makeText(context, "Check your credentials", Toast.LENGTH_LONG).show()
+            scope.launch {
+                if(loginState.user != null){
+//                    homeVm.onEvent(HomeEvent.getAlltasks)
+                    nav.navigate(AppNavigation.TasksScreen().route)
+                }else {
+                    Toast.makeText(context, "Check your credentials", Toast.LENGTH_LONG).show()
+                }
             }
+            // Either way can be used
+
+//            Log.d("Screen", loginState.user.toString())
+//            Log.d("Screen", ": ${loginViewModel.state.value}")
+//
+//            if(loginViewModel.state.value.user != null){
+//                nav.navigate(AppNavigation.TasksScreen().route)
+//            }else {
+//                Toast.makeText(context, "Check your credentials", Toast.LENGTH_LONG).show()
+//            }
                                     },
             modifier = Modifier.width(200.dp))
         {
@@ -114,7 +133,7 @@ fun LoginScreen(
             if(loginState.user != null){
                 nav.navigate(AppNavigation.TasksScreen().route)
             }else {
-                Toast.makeText(context, "Check your credentials", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Error signing up", Toast.LENGTH_LONG).show()
             }
                                  },
             modifier = Modifier.width(200.dp))
@@ -122,29 +141,9 @@ fun LoginScreen(
             Text(text = "Sign up")
         }
     }
-    fun signUp(email: String, password: String, nav: NavController, loginVM: LoginViewModel) {
-        loginVM.onEvent(LoginEvent.SignUp(email, password))
-        if(loginState.user != null){
-            nav.navigate(AppNavigation.TasksScreen().route)
-        }
-    }
-}
-
-
-fun logIn(email: String, password: String, nav: NavController, loginVM: LoginViewModel) {
-    loginVM.onEvent(LoginEvent.Login(email, password))
-    if(loginVM.state.value.user != null){
-        nav.navigate(AppNavigation.TasksScreen().route)
-    }
 
 }
 
-//fun signUp(email: String, password: String, nav: NavController, loginVM: LoginViewModel) {
-//    loginVM.onEvent(LoginEvent.SignUp(email, password))
-//    if(login != null){
-//        nav.navigate(AppNavigation.TasksScreen().route)
-//    }
-//}
 
 @Preview(showBackground = true)
 @Composable
