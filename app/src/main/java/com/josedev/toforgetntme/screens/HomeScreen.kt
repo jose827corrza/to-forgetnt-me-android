@@ -138,7 +138,7 @@ fun HomeScreen(
         ) {innerPadding ->
             Box (modifier = Modifier.padding(innerPadding)){
                 if (state.isLoading){
-                    homeVM.onEvent(HomeEvent.getAlltasks)
+                    homeVM.onEvent(HomeEvent.GetAllTasks)
                     Row (
                         modifier = Modifier.fillMaxSize(),
                         verticalAlignment = Alignment.CenterVertically,

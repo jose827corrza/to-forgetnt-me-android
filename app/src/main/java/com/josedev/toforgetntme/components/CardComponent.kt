@@ -24,19 +24,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.josedev.toforgetntme.domain.entity.ToDo
 import com.josedev.toforgetntme.navigation.routes.AppNavigation
+import com.josedev.toforgetntme.presentation.HomeViewModel
+import com.josedev.toforgetntme.repository.HomeEvent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardComponent(
     nav: NavController,
-    info: ToDo
+    info: ToDo,
+    homeVM: HomeViewModel = hiltViewModel()
 ) {
     Card (
         onClick = {
-                  nav.navigate(AppNavigation.UpsertTodoScreen(info.id).route)
+                  nav.navigate(AppNavigation.UpsertTodoScreen(info.id!!).route)
         },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
@@ -67,7 +71,9 @@ fun CardComponent(
             }
             IconButton(onClick = {
                 // TODO
+                homeVM.onEvent(HomeEvent.DeleteATaskById(info.id!!))
                 println("Click to delete")
+
             }) {
                 Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete")
             }

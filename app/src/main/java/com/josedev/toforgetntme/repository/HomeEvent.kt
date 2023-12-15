@@ -1,6 +1,6 @@
 package com.josedev.toforgetntme.repository
 
 sealed interface HomeEvent{
-    object getAlltasks: HomeEvent
-    data class getTaskById(val id: String): HomeEvent
+    object GetAllTasks: HomeEvent
+    data class DeleteATaskById(val id: String): HomeEvent
 }

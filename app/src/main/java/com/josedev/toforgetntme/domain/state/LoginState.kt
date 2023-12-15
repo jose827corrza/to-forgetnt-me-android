@@ -1,4 +1,4 @@
-package com.josedev.toforgetntme.domain.entity
+package com.josedev.toforgetntme.domain.state
 
 import com.google.firebase.auth.FirebaseUser
 

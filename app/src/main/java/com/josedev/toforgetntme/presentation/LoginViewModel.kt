@@ -1,9 +1,8 @@
 package com.josedev.toforgetntme.presentation
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.josedev.toforgetntme.domain.entity.LoginState
+import com.josedev.toforgetntme.domain.state.LoginState
 import com.josedev.toforgetntme.repository.auth.AuthenticationRepositoryImpl
 import com.josedev.toforgetntme.repository.LoginEvent
 import dagger.hilt.android.lifecycle.HiltViewModel

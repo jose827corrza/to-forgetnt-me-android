@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Warning
@@ -34,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -88,7 +90,9 @@ fun LoginScreen(
             singleLine = true,
             value = email,
             onValueChange = {email = it},
-            label = { Text(text = "Email")})
+            label = { Text(text = "Email")},
+            keyboardOptions = KeyboardOptions(autoCorrect = false, keyboardType = KeyboardType.Email)
+        )
         Spacer(modifier = Modifier.height(30.dp))
         OutlinedTextField(
             singleLine = true,
@@ -100,7 +104,7 @@ fun LoginScreen(
                 },
             onValueChange = {password = it},
             label = { Text(text = "Password")},
-
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Ascii),
             visualTransformation = if(isPasswordVisible) PasswordVisualTransformation() else VisualTransformation.None)
         Spacer(modifier = Modifier.height(40.dp))
         FilledTonalButton(onClick = {
