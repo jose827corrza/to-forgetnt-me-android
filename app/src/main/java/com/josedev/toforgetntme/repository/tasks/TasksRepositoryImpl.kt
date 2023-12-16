@@ -48,4 +48,27 @@ class TasksRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun createFirstTaskForNewUser() {
+        try {
+            val firstTodo = ToDo("My first Todo", false, "Your first task created in your DB", null)
+            val newTaskRef = firestore.collection("users")
+                .document(auth.currentUser!!.uid)
+                .collection("tasks")
+                .document()
+
+            newTaskRef
+                .set(firstTodo)
+                .await()
+            Log.d("TasksREPO", "Should created till here: ${newTaskRef.id}")
+            firestore.collection("users")
+                .document(auth.currentUser!!.uid)
+                .update("email", auth.currentUser!!.email)
+                .await()
+            Log.d("TasksREPO", "Finish process")
+        }catch (e: Exception){
+            Log.d("TasksREPO", "$e")
+        }
+
+    }
+
 }

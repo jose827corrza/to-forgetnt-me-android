@@ -8,8 +8,6 @@ data class ToDo(
     val isComplete: Boolean,
     val description: String,
     var id: String?,
-    val localDate: LocalDate,
-    val localTime: LocalTime
 ){
-    constructor(): this("", false,"", "", LocalDate.now(), LocalTime.now())
+    constructor(): this("", false,"", "")
 }

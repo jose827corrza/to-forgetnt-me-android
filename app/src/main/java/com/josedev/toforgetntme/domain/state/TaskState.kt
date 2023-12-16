@@ -5,6 +5,8 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 data class TaskState(
-    val taskData: ToDo = ToDo("", false, "", "", LocalDate.now(), LocalTime.now()),
-    val isLoading: Boolean = true
+    val taskData: ToDo = ToDo("", false, "", ""),
+    val isLoading: Boolean = true,
+    val taskDate: LocalDate = LocalDate.now(),
+    val taskTime: LocalTime = LocalTime.now()
 )

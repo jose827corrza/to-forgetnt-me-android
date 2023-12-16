@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.josedev.toforgetntme.domain.dto.ToDoDTO
 import com.josedev.toforgetntme.domain.entity.ToDo
 import com.josedev.toforgetntme.navigation.routes.AppNavigation
 import com.josedev.toforgetntme.presentation.HomeViewModel
@@ -166,10 +167,10 @@ fun TodoScreen(
                         Log.d("TScreen", "------")
                         Log.d("TScreen", "formattedDate: $formattedDate")
                         Log.d("TScreen", "formattedTime: $formattedTime")
-                        taskVM.onEvent(TaskEvent.CreateNewTask(ToDo(title, isComplete, description, null, LocalDate.now(), LocalTime.now())))
+                        taskVM.onEvent(TaskEvent.CreateNewTask(ToDoDTO(title,description,isComplete, pickedDate, pickedTime)))
                         nav.navigate(AppNavigation.TasksScreen().route)
                     }else {
-                        taskVM.onEvent(TaskEvent.UpdateTask(taskId, ToDo(title, isComplete, description, null, LocalDate.now(), LocalTime.now())))
+                        taskVM.onEvent(TaskEvent.UpdateTask(taskId, ToDoDTO(title,description,isComplete, pickedDate, pickedTime)))
                         nav.navigate(AppNavigation.TasksScreen().route)
                     }
                 }) {

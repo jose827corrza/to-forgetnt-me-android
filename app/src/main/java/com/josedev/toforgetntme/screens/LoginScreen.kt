@@ -134,10 +134,13 @@ fun LoginScreen(
         }
         ElevatedButton(onClick = {
             loginViewModel.onEvent(LoginEvent.SignUp(email, password))
-            if(loginState.user != null){
-                nav.navigate(AppNavigation.TasksScreen().route)
-            }else {
-                Toast.makeText(context, "Error signing up", Toast.LENGTH_LONG).show()
+            scope.launch {
+                if(loginState.user != null){
+                    nav.navigate(AppNavigation.TasksScreen().route)
+                }else {
+                    Toast.makeText(context, "Error signing up", Toast.LENGTH_LONG).show()
+                }
+
             }
                                  },
             modifier = Modifier.width(200.dp))

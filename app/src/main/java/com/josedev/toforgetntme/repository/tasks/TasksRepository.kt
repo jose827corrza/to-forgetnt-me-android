@@ -8,4 +8,6 @@ interface TasksRepository {
     suspend fun getAllUserTasks(): Resource<MutableList<ToDo>>
 
     suspend fun deleteATaskById(id: String)
+
+    suspend fun createFirstTaskForNewUser()
 }

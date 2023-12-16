@@ -30,13 +30,22 @@ class TaskRepositoryImpl @Inject constructor(
 
     override suspend fun createNewTask(task: ToDo) {
         try {
-            firestore.collection("users")
+//            firestore.collection("users")
+//                .document(auth.currentUser!!.uid)
+//                .collection("tasks")
+//                .add(task)
+//                .await()
+
+            val newTaskRef = firestore.collection("users")
                 .document(auth.currentUser!!.uid)
                 .collection("tasks")
-                .add(task)
+                .document()
+
+            newTaskRef
+                .set(task)
                 .await()
         } catch (e: Exception){
-
+            Log.d("REPO", "$e")
         }
 
     }

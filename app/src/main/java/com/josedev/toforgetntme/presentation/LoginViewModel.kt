@@ -1,11 +1,14 @@
 package com.josedev.toforgetntme.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.josedev.toforgetntme.domain.state.LoginState
 import com.josedev.toforgetntme.repository.auth.AuthenticationRepositoryImpl
 import com.josedev.toforgetntme.repository.LoginEvent
+import com.josedev.toforgetntme.repository.tasks.TasksRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -14,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val authenticationRepository: AuthenticationRepositoryImpl
+    private val authenticationRepository: AuthenticationRepositoryImpl,
+    private val tasksRepositoryImpl: TasksRepositoryImpl,
 ) : ViewModel(){
 
     val _state = MutableStateFlow(LoginState())
@@ -45,17 +49,20 @@ class LoginViewModel @Inject constructor(
             }
 
             is LoginEvent.SignUp -> {
-                viewModelScope.launch {
+                viewModelScope.launch(Dispatchers.IO) {
                     authenticationRepository.createUser(event.email, event.password)
                     val isUser = authenticationRepository.getUser()
                     if(isUser != null){
+                        tasksRepositoryImpl.createFirstTaskForNewUser()
                         _state.update {
                             it.copy(
-                                user = isUser,
+                                user = authenticationRepository.getUser(),
                                 isLoading = true
                             )
                         }
+
                     }else{
+                        Log.d("LoginVM", " Took the else")
                     }
                 }
             }

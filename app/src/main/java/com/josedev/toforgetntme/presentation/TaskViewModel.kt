@@ -1,7 +1,9 @@
 package com.josedev.toforgetntme.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.josedev.toforgetntme.domain.entity.ToDo
 import com.josedev.toforgetntme.domain.state.TaskState
 import com.josedev.toforgetntme.repository.TaskEvent
 import com.josedev.toforgetntme.repository.task.TaskRepositoryImpl
@@ -46,14 +48,15 @@ class TaskViewModel @Inject constructor(
 
             is TaskEvent.CreateNewTask -> {
                 viewModelScope.launch(Dispatchers.IO) {
-                    val format = event.task.localDate.toString() + " " + event.task.localTime
-                    val timeStampV = Timestamp.valueOf(format)
-                    taskRepository.createNewTask(event.task)
+                    Log.d("TaskVM", "date: ${event.task.taskDate} ... time: ${event.task.taskTime}")
+                    val todo = ToDo(event.task.name,event.task.isComplete,event.task.description, null)
+                    taskRepository.createNewTask(todo)
                 }
             }
             is TaskEvent.UpdateTask -> {
                 viewModelScope.launch(Dispatchers.IO) {
-                    taskRepository.updateTask(event.id, event.task)
+                    val todo = ToDo(event.task.name,event.task.isComplete,event.task.description, null)
+                    taskRepository.updateTask(event.id, todo)
                 }
             }
         }
