@@ -111,22 +111,13 @@ fun LoginScreen(
             loginViewModel.onEvent(LoginEvent.Login(email, password))
             scope.launch {
                 if(loginState.user != null){
-//                    homeVm.onEvent(HomeEvent.getAlltasks)
+                    Log.d("LoginScreen", "State: $loginState.user")
                     nav.navigate(AppNavigation.TasksScreen().route)
-                }else {
+                }else if(loginState.isError) {
                     Toast.makeText(context, "Check your credentials", Toast.LENGTH_LONG).show()
                 }
             }
-            // Either way can be used
 
-//            Log.d("Screen", loginState.user.toString())
-//            Log.d("Screen", ": ${loginViewModel.state.value}")
-//
-//            if(loginViewModel.state.value.user != null){
-//                nav.navigate(AppNavigation.TasksScreen().route)
-//            }else {
-//                Toast.makeText(context, "Check your credentials", Toast.LENGTH_LONG).show()
-//            }
                                     },
             modifier = Modifier.width(200.dp))
         {
@@ -136,6 +127,7 @@ fun LoginScreen(
             loginViewModel.onEvent(LoginEvent.SignUp(email, password))
             scope.launch {
                 if(loginState.user != null){
+                    Log.d("LoginScreen", "State: $loginState.user")
                     nav.navigate(AppNavigation.TasksScreen().route)
                 }else {
                     Toast.makeText(context, "Error signing up", Toast.LENGTH_LONG).show()
@@ -148,7 +140,9 @@ fun LoginScreen(
             Text(text = "Sign up")
         }
     }
-
+    if(loginState.isError) {
+        Toast.makeText(context, "Check your credentials.", Toast.LENGTH_LONG).show()
+    }
 }
 
 
