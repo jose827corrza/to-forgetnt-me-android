@@ -167,10 +167,10 @@ fun TodoScreen(
                         Log.d("TScreen", "------")
                         Log.d("TScreen", "formattedDate: $formattedDate")
                         Log.d("TScreen", "formattedTime: $formattedTime")
-                        taskVM.onEvent(TaskEvent.CreateNewTask(ToDoDTO(title,description,isComplete, pickedDate, pickedTime)))
+                        taskVM.onEvent(TaskEvent.CreateNewTask(ToDoDTO(title,description,isComplete, formattedDate, formattedTime)))
                         nav.navigate(AppNavigation.TasksScreen().route)
                     }else {
-                        taskVM.onEvent(TaskEvent.UpdateTask(taskId, ToDoDTO(title,description,isComplete, pickedDate, pickedTime)))
+                        taskVM.onEvent(TaskEvent.UpdateTask(taskId, ToDoDTO(title,description,isComplete, formattedDate, formattedTime)))
                         nav.navigate(AppNavigation.TasksScreen().route)
                     }
                 }) {

@@ -40,7 +40,7 @@ fun CardComponent(
 ) {
     Card (
         onClick = {
-                  nav.navigate(AppNavigation.UpsertTodoScreen(info.id!!).route)
+                  nav.navigate(AppNavigation.UpsertTodoScreen(info.userId).route)
         },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
@@ -71,7 +71,7 @@ fun CardComponent(
             }
             IconButton(onClick = {
                 // TODO
-                homeVM.onEvent(HomeEvent.DeleteATaskById(info.id!!))
+                homeVM.onEvent(HomeEvent.DeleteATaskById(info.userId))
                 println("Click to delete")
 
             }) {

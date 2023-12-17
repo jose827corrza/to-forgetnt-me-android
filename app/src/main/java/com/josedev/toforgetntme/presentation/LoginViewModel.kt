@@ -36,21 +36,21 @@ class LoginViewModel @Inject constructor(
                     val fireUser = authenticationRepository.loginUser(event.email, event.password)
 
                     // If there is a message, there were an error
-                    if(fireUser.message != null){
-                        Log.d("AuthVM", "There is message")
-                        _state.update {
-                            it.copy(
-                                isError = true
-                            )
-                        }
-                        delay(1000L)
-                        _state.update {
-                            it.copy(
-                                isError = false
-                            )
-                        }
-                        return@launch
-                    }
+//                    if(fireUser.message != null){
+//                        Log.d("AuthVM", "There is message")
+//                        _state.update {
+//                            it.copy(
+//                                isError = true
+//                            )
+//                        }
+//                        delay(1000L)
+//                        _state.update {
+//                            it.copy(
+//                                isError = false
+//                            )
+//                        }
+//                        return@launch
+//                    }
 
                     if(fireUser.data != null){
                         Log.d("AuthVM", "Enter the is")

@@ -16,14 +16,19 @@ class TasksRepositoryImpl @Inject constructor(
     override suspend fun getAllUserTasks(): Resource<MutableList<ToDo>> {
         try {
             val tasks: MutableList<ToDo> = mutableListOf()
-            val querySnapshot = firestore.collection("users")
-                .document(auth.currentUser!!.uid)
-                .collection("tasks")
+//            val querySnapshot = firestore.collection("users")
+//                .document(auth.currentUser!!.uid)
+//                .collection("tasks")
+//                .get()
+//                .await()
+            // V2.0
+            val querySnapshot = firestore.collection("tasks")
+                .whereEqualTo("userId", auth.currentUser!!.uid)
                 .get()
                 .await()
             for (task in querySnapshot.documents) {
                 var todoTask = task.toObject(ToDo::class.java)
-                todoTask?.id = task.id
+                todoTask?.userId = task.id
                 if (todoTask != null) {
                     tasks.add(todoTask)
                     Log.d("ID", "$todoTask")
@@ -37,12 +42,19 @@ class TasksRepositoryImpl @Inject constructor(
 
     override suspend fun deleteATaskById(id: String) {
         try {
-            firestore.collection("users")
-                .document(auth.currentUser!!.uid)
-                .collection("tasks")
+//            firestore.collection("users")
+//                .document(auth.currentUser!!.uid)
+//                .collection("tasks")
+//                .document(id)
+//                .delete()
+//                .await()
+
+            // V 2.0
+            firestore.collection("tasks")
                 .document(id)
                 .delete()
                 .await()
+
         }catch (e: Exception){
 
         }
@@ -50,20 +62,20 @@ class TasksRepositoryImpl @Inject constructor(
 
     override suspend fun createFirstTaskForNewUser() {
         try {
-            val firstTodo = ToDo("My first Todo", false, "Your first task created in your DB", null)
-            val newTaskRef = firestore.collection("users")
-                .document(auth.currentUser!!.uid)
-                .collection("tasks")
-                .document()
-
-            newTaskRef
-                .set(firstTodo)
-                .await()
-            Log.d("TasksREPO", "Should created till here: ${newTaskRef.id}")
-            firestore.collection("users")
-                .document(auth.currentUser!!.uid)
-                .update("email", auth.currentUser!!.email)
-                .await()
+//            val firstTodo = ToDo("My first Todo", false, "Your first task created in your DB", null)
+//            val newTaskRef = firestore.collection("users")
+//                .document(auth.currentUser!!.uid)
+//                .collection("tasks")
+//                .document()
+//
+//            newTaskRef
+//                .set(firstTodo)
+//                .await()
+//            Log.d("TasksREPO", "Should created till here: ${newTaskRef.id}")
+//            firestore.collection("users")
+//                .document(auth.currentUser!!.uid)
+//                .update("email", auth.currentUser!!.email)
+//                .await()
             Log.d("TasksREPO", "Finish process")
         }catch (e: Exception){
             Log.d("TasksREPO", "$e")

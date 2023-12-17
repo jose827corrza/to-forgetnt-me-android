@@ -7,7 +7,9 @@ data class ToDo(
     val name: String,
     val isComplete: Boolean,
     val description: String,
-    var id: String?,
+    var userId: String,
+    val taskTime: String,
+    val taskDate: String
 ){
-    constructor(): this("", false,"", "")
+    constructor(): this("", false,"", "", "","")
 }
