@@ -24,18 +24,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.josedev.toforgetntme.domain.entity.ToDo
 import com.josedev.toforgetntme.navigation.routes.AppNavigation
+import com.josedev.toforgetntme.presentation.HomeViewModel
+import com.josedev.toforgetntme.repository.HomeEvent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardComponent(
     nav: NavController,
-    id: String
+    info: ToDo,
+    homeVM: HomeViewModel = hiltViewModel()
 ) {
     Card (
         onClick = {
-                  nav.navigate(AppNavigation.UpsertTodoScreen(id).route)
+                  nav.navigate(AppNavigation.UpsertTodoScreen(info.userId).route)
         },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
@@ -54,7 +59,7 @@ fun CardComponent(
                 Text(
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
-                    text = "Task Title",
+                    text = info.name,
                     modifier = Modifier. padding(15.dp))
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
@@ -62,11 +67,13 @@ fun CardComponent(
                     textAlign = TextAlign.Justify,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.ExtraLight,
-                    text = "Random descrip that usually it is not as long as this")
+                    text = info.description)
             }
             IconButton(onClick = {
                 // TODO
+                homeVM.onEvent(HomeEvent.DeleteATaskById(info.userId))
                 println("Click to delete")
+
             }) {
                 Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete")
             }

@@ -14,3 +14,9 @@ Native Android app built using Kotlin which ease the use of the already created 
 
 ## Libraries used
 - HILT
+
+## Retribution for Icon
+
+Special thanks to FlatIcons for the Icon design 
+
+<a href="https://www.flaticon.com/free-icons/worker" title="worker icons">Worker icons created by Freepik - Flaticon</a>
