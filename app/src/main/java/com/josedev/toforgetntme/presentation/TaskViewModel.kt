@@ -1,9 +1,11 @@
 package com.josedev.toforgetntme.presentation
 
 import android.util.Log
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
+import com.josedev.toforgetntme.alarm.AlarmNotificationService
 import com.josedev.toforgetntme.domain.entity.ToDo
 import com.josedev.toforgetntme.domain.state.TaskState
 import com.josedev.toforgetntme.repository.TaskEvent
@@ -23,6 +25,7 @@ class TaskViewModel @Inject constructor(
     private val taskRepository: TaskRepositoryImpl,
     private val auth: FirebaseAuth
 ): ViewModel() {
+
 
     private val _state = MutableStateFlow(TaskState())
 
@@ -49,16 +52,21 @@ class TaskViewModel @Inject constructor(
             }
 
             is TaskEvent.CreateNewTask -> {
+                val alarmManager = AlarmNotificationService(event.context)
                 viewModelScope.launch(Dispatchers.IO) {
                     Log.d("TaskVM", "date: ${event.task.taskDate} ... time: ${event.task.taskTime}")
                     val todo = ToDo(event.task.name,event.task.isComplete,event.task.description, auth.currentUser!!.uid, event.task.taskTime, event.task.taskDate)
                     taskRepository.createNewTask(todo)
+                    Log.d("TaskVM", "Alarm will be set to: ${event.task.taskDate} and ${event.task.taskTime}")
+                    alarmManager.schedule(event.task)
                 }
             }
             is TaskEvent.UpdateTask -> {
+                val alarmManager = AlarmNotificationService(event.context)
                 viewModelScope.launch(Dispatchers.IO) {
                     val todo = ToDo(event.task.name,event.task.isComplete,event.task.description, auth.currentUser!!.uid, event.task.taskTime, event.task.taskDate)
                     taskRepository.updateTask(event.id, todo)
+                    alarmManager.schedule(event.task)
                 }
             }
         }

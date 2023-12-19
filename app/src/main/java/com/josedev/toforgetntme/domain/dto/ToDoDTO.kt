@@ -8,5 +8,7 @@ data class ToDoDTO(
     val description: String,
     val isComplete: Boolean,
     val taskDate: String,
-    val taskTime: String
+    val taskTime: String,
+    val date: LocalDate,
+    val time: LocalTime
 )

@@ -31,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -62,6 +63,7 @@ fun TodoScreen(
     taskId: String,
     taskVM: TaskViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
     val state by taskVM.state.collectAsState()
 
     var title by remember(state.taskData.name) {
@@ -167,10 +169,10 @@ fun TodoScreen(
                         Log.d("TScreen", "------")
                         Log.d("TScreen", "formattedDate: $formattedDate")
                         Log.d("TScreen", "formattedTime: $formattedTime")
-                        taskVM.onEvent(TaskEvent.CreateNewTask(ToDoDTO(title,description,isComplete, formattedDate, formattedTime)))
+                        taskVM.onEvent(TaskEvent.CreateNewTask(ToDoDTO(title,description,isComplete, formattedDate, formattedTime, pickedDate, pickedTime), context))
                         nav.navigate(AppNavigation.TasksScreen().route)
                     }else {
-                        taskVM.onEvent(TaskEvent.UpdateTask(taskId, ToDoDTO(title,description,isComplete, formattedDate, formattedTime)))
+                        taskVM.onEvent(TaskEvent.UpdateTask(taskId, ToDoDTO(title,description,isComplete, formattedDate, formattedTime, pickedDate, pickedTime), context))
                         nav.navigate(AppNavigation.TasksScreen().route)
                     }
                 }) {

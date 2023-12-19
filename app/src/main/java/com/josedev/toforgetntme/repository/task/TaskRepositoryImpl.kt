@@ -3,7 +3,6 @@ package com.josedev.toforgetntme.repository.task
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.toObject
 import com.josedev.toforgetntme.domain.entity.ToDo
 import com.josedev.toforgetntme.utils.Resource
 import kotlinx.coroutines.tasks.await
@@ -13,6 +12,7 @@ class TaskRepositoryImpl @Inject constructor(
     private val auth: FirebaseAuth,
     private val firestore: FirebaseFirestore
 ) : TaskRepository {
+
     override suspend fun getTaskById(id: String): Resource<ToDo> {
         return try {
 //            val test = firestore.collection("users")
