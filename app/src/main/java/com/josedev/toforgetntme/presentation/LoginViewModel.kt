@@ -19,8 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val authenticationRepository: AuthenticationRepositoryImpl,
-    private val tasksRepositoryImpl: TasksRepositoryImpl,
+    private val authenticationRepository: AuthenticationRepositoryImpl
 ) : ViewModel(){
 
     val _state = MutableStateFlow(LoginState())
@@ -32,34 +31,19 @@ class LoginViewModel @Inject constructor(
     fun onEvent(event: LoginEvent) {
         when(event){
             is LoginEvent.Login -> {
-                viewModelScope.launch {
+                viewModelScope.launch(Dispatchers.IO) {
                     val fireUser = authenticationRepository.loginUser(event.email, event.password)
-
-                    // If there is a message, there were an error
-//                    if(fireUser.message != null){
-//                        Log.d("AuthVM", "There is message")
-//                        _state.update {
-//                            it.copy(
-//                                isError = true
-//                            )
-//                        }
-//                        delay(1000L)
-//                        _state.update {
-//                            it.copy(
-//                                isError = false
-//                            )
-//                        }
-//                        return@launch
-//                    }
-
+                    Log.d("AuthVM", "fireuser login: ${fireUser.data.toString()}")
+                    Log.d("AuthVM", "state login: ${state.value}")
                     if(fireUser.data != null){
                         Log.d("AuthVM", "Enter the is")
                         _state.update {
                             it.copy(
-                                user = authenticationRepository.getUser(),
+                                user = fireUser.data,
                                 isLoading = true
                             )
                         }
+                        Log.d("AuthVM", "state login: ${state.value}")
                     }else{
                         Log.d("AuthVM", "Else caught me")
                         _state.update {
@@ -82,28 +66,27 @@ class LoginViewModel @Inject constructor(
                     val userAuth = authenticationRepository.createUser(event.email, event.password)
 
                     // If there is a message, there were an error
-                    if(userAuth.message != null){
-                        Log.d("AuthVM", "There is message")
-                        _state.update {
-                            it.copy(
-                                isError = true
-                            )
-                        }
-                        delay(1000L)
-                        _state.update {
-                            it.copy(
-                                isError = false
-                            )
-                        }
-                        return@launch
-                    }
+//                    if(userAuth.message != null){
+//                        Log.d("AuthVM", "There is message")
+//                        _state.update {
+//                            it.copy(
+//                                isError = true
+//                            )
+//                        }
+//                        delay(1000L)
+//                        _state.update {
+//                            it.copy(
+//                                isError = false
+//                            )
+//                        }
+//                        return@launch
+//                    }
 
                     // If there is data, make the process
                     if(userAuth.data != null){
-                        tasksRepositoryImpl.createFirstTaskForNewUser()
                         _state.update {
                             it.copy(
-                                user = authenticationRepository.getUser(),
+                                user = userAuth.data,
                                 isLoading = true
                             )
                         }

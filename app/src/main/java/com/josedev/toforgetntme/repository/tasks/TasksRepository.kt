@@ -9,5 +9,4 @@ interface TasksRepository {
 
     suspend fun deleteATaskById(id: String)
 
-    suspend fun createFirstTaskForNewUser()
 }

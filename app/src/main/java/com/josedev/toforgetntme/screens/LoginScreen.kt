@@ -52,6 +52,7 @@ import com.josedev.toforgetntme.repository.HomeEvent
 import com.josedev.toforgetntme.repository.LoginEvent
 import com.josedev.toforgetntme.ui.theme.ToForgetntMeTheme
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,7 +60,6 @@ import kotlinx.coroutines.launch
 fun LoginScreen(
     nav: NavController,
     loginViewModel: LoginViewModel = hiltViewModel(),
-//    homeVm: HomeViewModel = hiltViewModel()
 ) {
 
     val loginState by loginViewModel.state.collectAsState()
@@ -108,9 +108,11 @@ fun LoginScreen(
             visualTransformation = if(isPasswordVisible) PasswordVisualTransformation() else VisualTransformation.None)
         Spacer(modifier = Modifier.height(40.dp))
         FilledTonalButton(onClick = {
-            loginViewModel.onEvent(LoginEvent.Login(email, password))
             scope.launch {
-                if(loginState.user != null){
+                loginViewModel.onEvent(LoginEvent.Login(email, password))
+                Log.d("LoginScreen", "State Before If: ${loginViewModel.state.value}")
+                delay(1200L)
+                if(loginViewModel.state.value.user != null){
                     Log.d("LoginScreen", "State: $loginState.user")
                     nav.navigate(AppNavigation.TasksScreen().route)
                 }else if(loginState.isError) {
@@ -124,8 +126,9 @@ fun LoginScreen(
             Text(text = "Log in")
         }
         ElevatedButton(onClick = {
-            loginViewModel.onEvent(LoginEvent.SignUp(email, password))
             scope.launch {
+                loginViewModel.onEvent(LoginEvent.SignUp(email, password))
+                delay(1200L)
                 if(loginState.user != null){
                     Log.d("LoginScreen", "State: $loginState.user")
                     nav.navigate(AppNavigation.TasksScreen().route)
