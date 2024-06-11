@@ -15,11 +15,12 @@ class AlarmNotificationService(
     private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
     @SuppressLint("ScheduleExactAlarm")
-    override fun schedule(todo: ToDoDTO) {
+    override fun schedule(todo: ToDoDTO, taskId: String) {
         // Create Intent
         val intent = Intent(context, AlarmReceiver::class.java).apply {
             putExtra("TITLE", todo.name)
             putExtra("CONTENT", todo.description)
+            putExtra("TASK_ID", taskId)
         }
 
         // Configure with calendar and times given in the fun parameters
@@ -38,6 +39,22 @@ class AlarmNotificationService(
             PendingIntent.getBroadcast(
                 context,
                 todo.hashCode(),
+                intent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            )
+        )
+    }
+
+    override fun cancel(taskId: String) {
+        val intent = Intent(context, AlarmReceiver::class.java).apply {
+            putExtra("TITLE", "")
+            putExtra("CONTENT", "")
+            putExtra("TASK_ID", "")
+        }
+        alarmManager.cancel(
+            PendingIntent.getBroadcast(
+                context,
+                taskId.hashCode(),
                 intent,
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
             )

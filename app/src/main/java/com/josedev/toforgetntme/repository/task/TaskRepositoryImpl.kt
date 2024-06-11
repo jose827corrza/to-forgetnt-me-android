@@ -15,13 +15,7 @@ class TaskRepositoryImpl @Inject constructor(
 
     override suspend fun getTaskById(id: String): Resource<ToDo> {
         return try {
-//            val test = firestore.collection("users")
-//                .document(auth.currentUser!!.uid)
-//                .collection("tasks")
-//                .document(id)
-//                .get()
-//                .await()
-//                .toObject(ToDo::class.java)
+
 
             // V2.0
             val task = firestore.collection("tasks")
@@ -29,14 +23,14 @@ class TaskRepositoryImpl @Inject constructor(
                 .get()
                 .await()
                 .toObject(ToDo::class.java)
-            Log.d("REPO", "$task")
+
             Resource.Success(task)
         }catch (e: Exception){
             Resource.Error(null, e.message)
         }
     }
 
-    override suspend fun createNewTask(task: ToDo) {
+    override suspend fun createNewTask(task: ToDo): Resource<String> {
         try {
 //            firestore.collection("users")
 //                .document(auth.currentUser!!.uid)
@@ -56,29 +50,35 @@ class TaskRepositoryImpl @Inject constructor(
             newTaskRef
                 .set(task)
                 .await()
+            return Resource.Success(newTaskRef.id)
         } catch (e: Exception){
-            Log.d("REPO", "$e")
+            return Resource.Error(null, e.message)
         }
 
     }
 
-    override suspend fun updateTask(id: String, task: ToDo) {
+    override suspend fun updateTask(id: String, task: ToDo): Resource<String> {
 
         try {
-//            firestore.collection("users")
-//                .document(auth.currentUser!!.uid)
-//                .collection("tasks")
-//                .document(id)
-//                .set(task) // Updates the whole document
-//                .await()
 
             // V2.0
-            firestore.collection("tasks")
+            val taskRef = firestore.collection("tasks")
                 .document(id)
+
+            taskRef
                 .set(task) // Updates the whole document
                 .await()
+            return Resource.Success(taskRef.id)
         } catch (e: Exception){
-
+            Log.d("TaskRepo", "${e.message}")
+            return Resource.Error(null, e.message)
         }
+    }
+
+    override suspend fun setTaskAsComplete(id: String) {
+        firestore.collection("tasks")
+            .document(id)
+            .update("complete", true)
+            .await()
     }
 }

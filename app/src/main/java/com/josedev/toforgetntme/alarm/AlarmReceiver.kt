@@ -3,6 +3,7 @@ package com.josedev.toforgetntme.alarm
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.josedev.toforgetntme.notification.TaskNotificationService
 import java.time.LocalTime
 
@@ -12,8 +13,11 @@ class AlarmReceiver: BroadcastReceiver() {
 
         val title = intent.getStringExtra("TITLE") ?: ""
         val content = intent.getStringExtra("CONTENT") ?: ""
+        val taskId = intent.getStringExtra("TASK_ID") ?: ""
+
+        Log.d("AlarmReceiver", "Not for task with ID: $taskId")
 
         println("Flag executing the alarm: ${LocalTime.now()}")
-        taskNotification.showNotification(title, content)
+        taskNotification.showNotification(title, content, taskId)
     }
 }

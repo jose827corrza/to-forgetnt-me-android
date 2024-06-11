@@ -75,7 +75,7 @@ fun LoginScreen(
     }
 
     var isPasswordVisible by remember {
-        mutableStateOf(false)
+        mutableStateOf(true)
     }
 
     Column (

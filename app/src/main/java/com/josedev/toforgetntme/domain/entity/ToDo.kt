@@ -5,7 +5,7 @@ import java.time.LocalTime
 
 data class ToDo(
     val name: String,
-    val isComplete: Boolean,
+    var isComplete: Boolean,
     val description: String,
     var userId: String,
     val taskTime: String,

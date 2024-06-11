@@ -33,19 +33,19 @@ class LoginViewModel @Inject constructor(
             is LoginEvent.Login -> {
                 viewModelScope.launch(Dispatchers.IO) {
                     val fireUser = authenticationRepository.loginUser(event.email, event.password)
-                    Log.d("AuthVM", "fireuser login: ${fireUser.data.toString()}")
-                    Log.d("AuthVM", "state login: ${state.value}")
+//                    Log.d("AuthVM", "fireuser login: ${fireUser.data.toString()}")
+//                    Log.d("AuthVM", "state login: ${state.value}")
                     if(fireUser.data != null){
-                        Log.d("AuthVM", "Enter the is")
+//                        Log.d("AuthVM", "Enter the is")
                         _state.update {
                             it.copy(
                                 user = fireUser.data,
                                 isLoading = true
                             )
                         }
-                        Log.d("AuthVM", "state login: ${state.value}")
+//                        Log.d("AuthVM", "state login: ${state.value}")
                     }else{
-                        Log.d("AuthVM", "Else caught me")
+//                        Log.d("AuthVM", "Else caught me")
                         _state.update {
                             it.copy(
                                 isError = true

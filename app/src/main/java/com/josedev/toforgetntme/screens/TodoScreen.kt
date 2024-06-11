@@ -55,6 +55,7 @@ import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -83,13 +84,14 @@ fun TodoScreen(
     }
     val formattedDate by remember {
         derivedStateOf {
-            DateTimeFormatter.ofPattern("yyyy-MM-dd").format(pickedDate)
-//            LocalDate.parse(pickedDate, )
+//            DateTimeFormatter.ofPattern("yyyy-MM-dd").format(pickedDate)
+            DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).format(pickedDate)
         }
     }
     val formattedTime by remember {
         derivedStateOf {
-            DateTimeFormatter.ofPattern("kk:mm:ss").format(pickedTime)
+//            DateTimeFormatter.ofPattern("kk:mm").format(pickedTime)
+            DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).format(pickedTime)
         }
     }
     val datePickerDialogState = rememberMaterialDialogState()
@@ -208,7 +210,7 @@ fun TodoScreen(
     ){
         timepicker(
             initialTime = LocalTime.now(),
-            title = "Pick a Date",
+            title = "Pick a Time",
             colors = TimePickerDefaults.colors(
                 activeBackgroundColor = MaterialTheme.colorScheme.primaryContainer
             )

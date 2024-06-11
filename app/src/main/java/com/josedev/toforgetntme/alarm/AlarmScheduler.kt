@@ -5,5 +5,6 @@ import com.josedev.toforgetntme.domain.state.TaskState
 
 interface AlarmScheduler {
 
-    fun schedule(todo: ToDoDTO)
+    fun schedule(todo: ToDoDTO, taskId: String)
+    fun cancel(taskId: String)
 }
