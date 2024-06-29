@@ -31,7 +31,6 @@ class TasksRepositoryImpl @Inject constructor(
                 todoTask?.userId = task.id
                 if (todoTask != null) {
                     tasks.add(todoTask)
-                    Log.d("ID", "$todoTask")
                 }
             }
             return Resource.Success(tasks)

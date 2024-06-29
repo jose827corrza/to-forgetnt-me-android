@@ -26,7 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val auth = Firebase.auth
+        val auth = Firebase.auth.currentUser
 
         FirebaseApp.initializeApp(applicationContext)
         val loginViewModel: LoginViewModel by viewModels()
@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    AppNavigation()
+                        AppNavigation()
                 }
             }
         }

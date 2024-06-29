@@ -54,11 +54,9 @@ class TaskViewModel @Inject constructor(
             is TaskEvent.CreateNewTask -> {
                 val alarmManager = AlarmNotificationService(event.context)
                 viewModelScope.launch(Dispatchers.IO) {
-//                    Log.d("TaskVM", "date: ${event.task.taskDate} ... time: ${event.task.taskTime}")
                     val todo = ToDo(event.task.name,event.task.isComplete,event.task.description, auth.currentUser!!.uid, event.task.taskTime, event.task.taskDate)
                     val taskInfo = taskRepository.createNewTask(todo)
                     if(taskInfo.data != null){
-//                        Log.d("TaskVM", "Alarm will be set to: ${event.task.taskDate} and ${event.task.taskTime}")
                         alarmManager.schedule(event.task, taskInfo.data)
                     }
                 }

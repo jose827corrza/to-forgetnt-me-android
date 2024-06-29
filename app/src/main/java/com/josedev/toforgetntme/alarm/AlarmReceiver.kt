@@ -17,7 +17,6 @@ class AlarmReceiver: BroadcastReceiver() {
 
         Log.d("AlarmReceiver", "Not for task with ID: $taskId")
 
-        println("Flag executing the alarm: ${LocalTime.now()}")
         taskNotification.showNotification(title, content, taskId)
     }
 }

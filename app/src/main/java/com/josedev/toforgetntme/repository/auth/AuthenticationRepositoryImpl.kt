@@ -12,14 +12,7 @@ class AuthenticationRepositoryImpl @Inject constructor(
 ) : AuthenticationRepository {
     override suspend fun createUser(email: String, password: String): Resource<FirebaseUser> {
         return try {
-            auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener { result ->
-                    if(result.isSuccessful){
-                        Log.d("REPOSITORY", "User $email created")
-                    }else {
-                        Log.d("REPOSITORY", "User $email could not be created")
-                    }
-                }
+            val t =auth.createUserWithEmailAndPassword(email, password)
                 .await()
             Resource.Success(auth.currentUser)
         }catch (e: Exception){
@@ -29,15 +22,7 @@ class AuthenticationRepositoryImpl @Inject constructor(
 
     override suspend fun loginUser(email: String, password: String): Resource<FirebaseUser> {
         return try {
-            auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener {
-                    if(it.isSuccessful){
-                        Log.d("REPOSITORY", "User $email logged")
-                    }else {
-                        Log.d("REPOSITORY", "User $email could not be logged")
-
-                    }
-                }.await()
+            auth.signInWithEmailAndPassword(email, password).await()
             Resource.Success(auth.currentUser)
         }catch (e: Exception){
             Resource.Error(null, e.message)
@@ -45,7 +30,11 @@ class AuthenticationRepositoryImpl @Inject constructor(
     }
 
     override fun signOut() {
-       auth.signOut()
+        try {
+            auth.signOut()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     override fun getUser(): FirebaseUser? {

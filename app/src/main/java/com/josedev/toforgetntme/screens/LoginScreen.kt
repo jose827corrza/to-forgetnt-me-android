@@ -110,10 +110,8 @@ fun LoginScreen(
         FilledTonalButton(onClick = {
             scope.launch {
                 loginViewModel.onEvent(LoginEvent.Login(email, password))
-                Log.d("LoginScreen", "State Before If: ${loginViewModel.state.value}")
                 delay(1200L)
                 if(loginViewModel.state.value.user != null){
-                    Log.d("LoginScreen", "State: $loginState.user")
                     nav.navigate(AppNavigation.TasksScreen().route)
                 }else if(loginState.isError) {
                     Toast.makeText(context, "Check your credentials", Toast.LENGTH_LONG).show()
@@ -130,7 +128,6 @@ fun LoginScreen(
                 loginViewModel.onEvent(LoginEvent.SignUp(email, password))
                 delay(1200L)
                 if(loginState.user != null){
-                    Log.d("LoginScreen", "State: $loginState.user")
                     nav.navigate(AppNavigation.TasksScreen().route)
                 }else {
                     Toast.makeText(context, "Error signing up", Toast.LENGTH_LONG).show()

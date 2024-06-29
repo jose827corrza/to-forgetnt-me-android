@@ -11,7 +11,7 @@ class ForgetntmeApp: Application() {
     override fun onCreate() {
         super.onCreate()
         val notificationChannel = NotificationChannel(
-            "random_id",
+            "8a954b58-a6eb-496d-803e-e7f9f2965df8",
             "Tasks Alarms",
             NotificationManager.IMPORTANCE_HIGH
         )

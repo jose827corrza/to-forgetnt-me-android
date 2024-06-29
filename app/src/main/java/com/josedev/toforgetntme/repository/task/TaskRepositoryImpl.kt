@@ -70,7 +70,6 @@ class TaskRepositoryImpl @Inject constructor(
                 .await()
             return Resource.Success(taskRef.id)
         } catch (e: Exception){
-            Log.d("TaskRepo", "${e.message}")
             return Resource.Error(null, e.message)
         }
     }

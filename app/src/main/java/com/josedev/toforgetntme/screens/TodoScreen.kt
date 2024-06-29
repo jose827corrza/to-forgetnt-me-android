@@ -178,7 +178,6 @@ fun TodoScreen(
                         nav.navigate(AppNavigation.TasksScreen().route)
                     }
                 }) {
-                    Log.d("TScreen", "taskId: $taskId")
                     Text(text = if(taskId == "new") "Create Todo" else "Update Todo")
                 }
             }
