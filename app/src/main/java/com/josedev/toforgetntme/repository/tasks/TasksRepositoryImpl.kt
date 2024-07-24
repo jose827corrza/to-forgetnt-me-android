@@ -16,23 +16,33 @@ class TasksRepositoryImpl @Inject constructor(
     override suspend fun getAllUserTasks(): Resource<MutableList<ToDo>> {
         try {
             val tasks: MutableList<ToDo> = mutableListOf()
-//            val querySnapshot = firestore.collection("users")
-//                .document(auth.currentUser!!.uid)
-//                .collection("tasks")
-//                .get()
-//                .await()
-            // V2.0
-            val querySnapshot = firestore.collection("tasks")
-                .whereEqualTo("userId", auth.currentUser!!.uid)
+
+            // v3.0
+            val querySnapshotNew = firestore.collection("users")
+                .document(auth.currentUser!!.uid)
+                .collection("todos")
                 .get()
                 .await()
-            for (task in querySnapshot.documents) {
-                var todoTask = task.toObject(ToDo::class.java)
-                todoTask?.userId = task.id
-                if (todoTask != null) {
-                    tasks.add(todoTask)
+            for (task in querySnapshotNew.documents) {
+                val todoTaskNew = task.toObject(ToDo::class.java)
+                todoTaskNew?.userId = task.id
+                if (todoTaskNew != null) {
+                    tasks.add(todoTaskNew)
                 }
             }
+
+            // V2.0
+//            val querySnapshot = firestore.collection("tasks")
+//                .whereEqualTo("userId", auth.currentUser!!.uid)
+//                .get()
+//                .await()
+//            for (task in querySnapshot.documents) {
+//                var todoTask = task.toObject(ToDo::class.java)
+//                todoTask?.userId = task.id
+//                if (todoTask != null) {
+//                    tasks.add(todoTask)
+//                }
+//            }
             return Resource.Success(tasks)
         } catch (e: Exception) {
             return Resource.Error(null, e.message)
@@ -41,21 +51,22 @@ class TasksRepositoryImpl @Inject constructor(
 
     override suspend fun deleteATaskById(id: String) {
         try {
-//            firestore.collection("users")
-//                .document(auth.currentUser!!.uid)
-//                .collection("tasks")
-//                .document(id)
-//                .delete()
-//                .await()
-
-            // V 2.0
-            firestore.collection("tasks")
+            //v3.0
+            firestore.collection("users")
+                .document(auth.currentUser!!.uid)
+                .collection("todos")
                 .document(id)
                 .delete()
                 .await()
 
-        }catch (e: Exception){
+            // V 2.0
+//            firestore.collection("tasks")
+//                .document(id)
+//                .delete()
+//                .await()
 
+        }catch (e: Exception){
+            Log.d("TASKS", "Error Deleting: " + e.message)
         }
     }
 
