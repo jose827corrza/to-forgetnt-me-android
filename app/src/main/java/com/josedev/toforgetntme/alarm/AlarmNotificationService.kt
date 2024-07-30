@@ -18,7 +18,7 @@ class AlarmNotificationService(
     override fun schedule(todo: ToDoDTO, taskId: String) {
         // Create Intent
         val intent = Intent(context, AlarmReceiver::class.java).apply {
-            putExtra("TITLE", todo.name)
+            putExtra("TITLE", todo.title)
             putExtra("CONTENT", todo.description)
             putExtra("TASK_ID", taskId)
         }

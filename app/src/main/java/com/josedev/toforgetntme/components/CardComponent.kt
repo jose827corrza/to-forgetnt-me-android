@@ -58,7 +58,7 @@ fun CardComponent(
 
     Card (
         onClick = {
-                  nav.navigate(AppNavigation.UpsertTodoScreen(info.userId).route)
+                  nav.navigate(AppNavigation.UpsertTodoScreen(info.id).route)
         },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
@@ -77,7 +77,7 @@ fun CardComponent(
                 Text(
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
-                    text = info.name,
+                    text = info.title,
                     modifier = Modifier. padding(15.dp))
                 Spacer(modifier = Modifier.height(10.dp))
 //                Text(
@@ -96,7 +96,7 @@ fun CardComponent(
             }
             IconButton(onClick = {
                 // TODO
-                homeVM.onEvent(HomeEvent.DeleteATaskById(info.userId))
+                homeVM.onEvent(HomeEvent.DeleteATaskById(info.id))
                 println("Click to delete")
 
             }) {

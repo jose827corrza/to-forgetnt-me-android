@@ -25,7 +25,7 @@ class TasksRepositoryImpl @Inject constructor(
                 .await()
             for (task in querySnapshotNew.documents) {
                 val todoTaskNew = task.toObject(ToDo::class.java)
-                todoTaskNew?.userId = task.id
+                todoTaskNew?.id = task.id
                 if (todoTaskNew != null) {
                     tasks.add(todoTaskNew)
                 }

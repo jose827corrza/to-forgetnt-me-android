@@ -56,6 +56,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import java.time.temporal.ChronoField
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,14 +68,14 @@ fun TodoScreen(
     val context = LocalContext.current
     val state by taskVM.state.collectAsState()
 
-    var title by remember(state.taskData.name) {
-        mutableStateOf(state.taskData.name)
+    var title by remember(state.taskData.title) {
+        mutableStateOf(state.taskData.title)
     }
     var description by remember(state.taskData.description) {
         mutableStateOf(state.taskData.description)
     }
-    var isComplete by remember(state.taskData.isComplete) {
-        mutableStateOf(state.taskData.isComplete)
+    var isComplete by remember(state.taskData.isDone) {
+        mutableStateOf(state.taskData.isDone)
     }
     var pickedDate by remember {
         mutableStateOf(LocalDate.now())
@@ -84,8 +85,8 @@ fun TodoScreen(
     }
     val formattedDate by remember {
         derivedStateOf {
-//            DateTimeFormatter.ofPattern("yyyy-MM-dd").format(pickedDate)
-            DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).format(pickedDate)
+            DateTimeFormatter.ofPattern("yyyy-MM-dd").format(pickedDate)
+//            DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).format(pickedDate)
         }
     }
     val formattedTime by remember {
@@ -103,6 +104,9 @@ fun TodoScreen(
 //        if(taskId != "new"){
 //            taskVM.onEvent(TaskEvent.GetTaskById(taskId))
 //        }
+        val time = LocalTime.parse("19:34:50.63")
+        val t = time.getLong(ChronoField.MILLI_OF_SECOND)
+
        Column(
            modifier = Modifier.fillMaxSize(),
            verticalArrangement = Arrangement.Center,
@@ -171,10 +175,10 @@ fun TodoScreen(
                         Log.d("TScreen", "------")
                         Log.d("TScreen", "formattedDate: $formattedDate")
                         Log.d("TScreen", "formattedTime: $formattedTime")
-                        taskVM.onEvent(TaskEvent.CreateNewTask(ToDoDTO(title,description,isComplete, formattedDate, formattedTime, pickedDate, pickedTime), context))
+                        taskVM.onEvent(TaskEvent.CreateNewTask(ToDoDTO(title,description,isComplete, 0L,formattedDate, formattedTime, pickedDate, pickedTime), context))
                         nav.navigate(AppNavigation.TasksScreen().route)
                     }else {
-                        taskVM.onEvent(TaskEvent.UpdateTask(taskId, ToDoDTO(title,description,isComplete, formattedDate, formattedTime, pickedDate, pickedTime), context))
+                        taskVM.onEvent(TaskEvent.UpdateTask(taskId, ToDoDTO(title,description,isComplete, 0L,formattedDate, formattedTime, pickedDate, pickedTime), context))
                         nav.navigate(AppNavigation.TasksScreen().route)
                     }
                 }) {

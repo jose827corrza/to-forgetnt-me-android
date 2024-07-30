@@ -18,6 +18,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.sql.Timestamp
+import java.time.LocalDate
+import java.time.temporal.ChronoField
 import javax.inject.Inject
 
 @HiltViewModel
@@ -54,7 +56,17 @@ class TaskViewModel @Inject constructor(
             is TaskEvent.CreateNewTask -> {
                 val alarmManager = AlarmNotificationService(event.context)
                 viewModelScope.launch(Dispatchers.IO) {
-                    val todo = ToDo(event.task.name,event.task.isComplete,event.task.description, auth.currentUser!!.uid, event.task.taskTime, event.task.taskDate)
+                    // Convert LocalDate to Long
+                    val dueDate = LocalDate.parse(event.task.taskDate)
+                    val longDueDate = dueDate.getLong(ChronoField.EPOCH_DAY)
+                    val todo = ToDo(
+                        event.task.title,event.task.isComplete,
+                        event.task.description,
+                        auth.currentUser!!.uid,
+                        longDueDate,
+                        event.task.taskTime,
+                        event.task.taskDate
+                    )
                     val taskInfo = taskRepository.createNewTask(todo)
                     if(taskInfo.data != null){
                         alarmManager.schedule(event.task, taskInfo.data)
@@ -64,7 +76,15 @@ class TaskViewModel @Inject constructor(
             is TaskEvent.UpdateTask -> {
                 val alarmManager = AlarmNotificationService(event.context)
                 viewModelScope.launch(Dispatchers.IO) {
-                    val todo = ToDo(event.task.name,event.task.isComplete,event.task.description, auth.currentUser!!.uid, event.task.taskTime, event.task.taskDate)
+                    val todo = ToDo(
+                        event.task.title,
+                        event.task.isComplete,
+                        event.task.description,
+                        auth.currentUser!!.uid,
+                        event.task.createdDate,
+                        event.task.taskTime,
+                        event.task.taskDate
+                    )
                     val taskInfo = taskRepository.updateTask(event.id, todo)
 
                     if(taskInfo.data != null){
