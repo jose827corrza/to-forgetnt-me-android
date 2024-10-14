@@ -89,7 +89,6 @@ class TaskViewModel @Inject constructor(
 
                     if(taskInfo.data != null){
                         alarmManager.cancel(taskInfo.data)
-                        Log.d("TaskVM", "Alarm will be set to UPDATED: ${event.task.taskDate} and ${event.task.taskTime}")
                         alarmManager.schedule(event.task, taskInfo.data)
                     }
                 }

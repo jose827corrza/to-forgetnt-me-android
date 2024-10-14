@@ -92,7 +92,6 @@ fun CardComponent(
                     fontSize = 12.sp,
                     fontWeight = FontWeight.ExtraLight,
                     text = info.taskTime + " " + info.taskDate)
-                Log.d("HOUR", info.taskTime)
             }
             IconButton(onClick = {
                 // TODO

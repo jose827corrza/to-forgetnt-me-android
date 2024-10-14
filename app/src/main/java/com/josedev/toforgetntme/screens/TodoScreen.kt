@@ -169,12 +169,7 @@ fun TodoScreen(
             Row (horizontalArrangement = Arrangement.Center){
                 ElevatedButton(onClick = {
                     if(taskId == "new"){
-                        Log.d("TScreen", "WANT FORMAT: yyyy-m[m]-d[d] hh:mm:ss[.f…]")
-                        Log.d("TScreen", "pickedDate: $pickedDate")
-                        Log.d("TScreen", "pickedTime: $pickedTime")
-                        Log.d("TScreen", "------")
-                        Log.d("TScreen", "formattedDate: $formattedDate")
-                        Log.d("TScreen", "formattedTime: $formattedTime")
+//                        Log.d("TScreen", "WANT FORMAT: yyyy-m[m]-d[d] hh:mm:ss[.f…]")
                         taskVM.onEvent(TaskEvent.CreateNewTask(ToDoDTO(title,description,isComplete, 0L,formattedDate, formattedTime, pickedDate, pickedTime), context))
                         nav.navigate(AppNavigation.TasksScreen().route)
                     }else {
