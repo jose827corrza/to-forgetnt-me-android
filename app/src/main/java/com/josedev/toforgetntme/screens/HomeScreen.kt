@@ -79,17 +79,17 @@ fun HomeScreen(
                                 drawerState.close()
                         }
                     })
-                NavigationDrawerItem(
-                    label = { Text(
-                        text = "Posts   (Soon)",
-                        color = Color.Gray,
-                        fontWeight = FontWeight.Light) },
-                    selected = false,
-                    onClick = {
-                        scope.launch {
-                            drawerState.close()
-                        }
-                    })
+//                NavigationDrawerItem(
+//                    label = { Text(
+//                        text = "Posts   (Soon)",
+//                        color = Color.Gray,
+//                        fontWeight = FontWeight.Light) },
+//                    selected = false,
+//                    onClick = {
+//                        scope.launch {
+//                            drawerState.close()
+//                        }
+//                    })
                 NavigationDrawerItem(
                     label = { Text(
                         text = "Sign Out",

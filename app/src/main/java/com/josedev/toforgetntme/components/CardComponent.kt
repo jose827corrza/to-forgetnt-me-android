@@ -1,5 +1,6 @@
 package com.josedev.toforgetntme.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +18,11 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -30,6 +36,8 @@ import com.josedev.toforgetntme.domain.entity.ToDo
 import com.josedev.toforgetntme.navigation.routes.AppNavigation
 import com.josedev.toforgetntme.presentation.HomeViewModel
 import com.josedev.toforgetntme.repository.HomeEvent
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,9 +46,19 @@ fun CardComponent(
     info: ToDo,
     homeVM: HomeViewModel = hiltViewModel()
 ) {
+
+//    var pickedTime by remember {
+//        mutableStateOf(LocalTime.parse(info.))
+//    }
+//    val formattedTime by remember {
+//        derivedStateOf {
+//            DateTimeFormatter.ofPattern("kk:mm").format(pickedTime)
+//        }
+//    }
+
     Card (
         onClick = {
-                  nav.navigate(AppNavigation.UpsertTodoScreen(info.userId).route)
+                  nav.navigate(AppNavigation.UpsertTodoScreen(info.id).route)
         },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
@@ -59,19 +77,25 @@ fun CardComponent(
                 Text(
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
-                    text = info.name,
+                    text = info.title,
                     modifier = Modifier. padding(15.dp))
                 Spacer(modifier = Modifier.height(10.dp))
+//                Text(
+//                    modifier = Modifier.padding(5.dp),
+//                    textAlign = TextAlign.Justify,
+//                    fontSize = 12.sp,
+//                    fontWeight = FontWeight.ExtraLight,
+//                    text = info.description)
                 Text(
                     modifier = Modifier.padding(5.dp),
                     textAlign = TextAlign.Justify,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.ExtraLight,
-                    text = info.description)
+                    text = info.taskTime + " " + info.taskDate)
             }
             IconButton(onClick = {
                 // TODO
-                homeVM.onEvent(HomeEvent.DeleteATaskById(info.userId))
+                homeVM.onEvent(HomeEvent.DeleteATaskById(info.id))
                 println("Click to delete")
 
             }) {

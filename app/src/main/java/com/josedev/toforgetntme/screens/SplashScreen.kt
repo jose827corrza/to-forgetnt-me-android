@@ -1,5 +1,6 @@
 package com.josedev.toforgetntme.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import com.josedev.toforgetntme.R
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,15 +18,23 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.Image
 import androidx.compose.ui.res.painterResource
 import androidx.compose.material3.Text
+import com.google.firebase.auth.FirebaseUser
 import com.josedev.toforgetntme.navigation.routes.AppNavigation
 
 @Composable
-fun SplashScreen(navController: NavController) {
+fun SplashScreen(
+    navController: NavController,
+    auth: FirebaseUser?
+    ) {
 
     LaunchedEffect(key1 = true){
         delay(600)
         navController.popBackStack() // Prevents to be able to return to splash screen
-        navController.navigate(AppNavigation.LoginScreen().route)
+        if(auth != null){
+            navController.navigate(AppNavigation.TasksScreen().route)
+        } else {
+            navController.navigate(AppNavigation.LoginScreen().route)
+        }
     }
     Splash()
 }

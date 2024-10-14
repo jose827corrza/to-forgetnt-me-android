@@ -31,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -54,6 +55,8 @@ import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.time.temporal.ChronoField
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,16 +65,17 @@ fun TodoScreen(
     taskId: String,
     taskVM: TaskViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
     val state by taskVM.state.collectAsState()
 
-    var title by remember(state.taskData.name) {
-        mutableStateOf(state.taskData.name)
+    var title by remember(state.taskData.title) {
+        mutableStateOf(state.taskData.title)
     }
     var description by remember(state.taskData.description) {
         mutableStateOf(state.taskData.description)
     }
-    var isComplete by remember(state.taskData.isComplete) {
-        mutableStateOf(state.taskData.isComplete)
+    var isComplete by remember(state.taskData.isDone) {
+        mutableStateOf(state.taskData.isDone)
     }
     var pickedDate by remember {
         mutableStateOf(LocalDate.now())
@@ -82,12 +86,13 @@ fun TodoScreen(
     val formattedDate by remember {
         derivedStateOf {
             DateTimeFormatter.ofPattern("yyyy-MM-dd").format(pickedDate)
-//            LocalDate.parse(pickedDate, )
+//            DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).format(pickedDate)
         }
     }
     val formattedTime by remember {
         derivedStateOf {
-            DateTimeFormatter.ofPattern("kk:mm:ss").format(pickedTime)
+//            DateTimeFormatter.ofPattern("kk:mm").format(pickedTime)
+            DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).format(pickedTime)
         }
     }
     val datePickerDialogState = rememberMaterialDialogState()
@@ -99,6 +104,9 @@ fun TodoScreen(
 //        if(taskId != "new"){
 //            taskVM.onEvent(TaskEvent.GetTaskById(taskId))
 //        }
+        val time = LocalTime.parse("19:34:50.63")
+        val t = time.getLong(ChronoField.MILLI_OF_SECOND)
+
        Column(
            modifier = Modifier.fillMaxSize(),
            verticalArrangement = Arrangement.Center,
@@ -161,20 +169,14 @@ fun TodoScreen(
             Row (horizontalArrangement = Arrangement.Center){
                 ElevatedButton(onClick = {
                     if(taskId == "new"){
-                        Log.d("TScreen", "WANT FORMAT: yyyy-m[m]-d[d] hh:mm:ss[.f…]")
-                        Log.d("TScreen", "pickedDate: $pickedDate")
-                        Log.d("TScreen", "pickedTime: $pickedTime")
-                        Log.d("TScreen", "------")
-                        Log.d("TScreen", "formattedDate: $formattedDate")
-                        Log.d("TScreen", "formattedTime: $formattedTime")
-                        taskVM.onEvent(TaskEvent.CreateNewTask(ToDoDTO(title,description,isComplete, formattedDate, formattedTime)))
+//                        Log.d("TScreen", "WANT FORMAT: yyyy-m[m]-d[d] hh:mm:ss[.f…]")
+                        taskVM.onEvent(TaskEvent.CreateNewTask(ToDoDTO(title,description,isComplete, 0L,formattedDate, formattedTime, pickedDate, pickedTime), context))
                         nav.navigate(AppNavigation.TasksScreen().route)
                     }else {
-                        taskVM.onEvent(TaskEvent.UpdateTask(taskId, ToDoDTO(title,description,isComplete, formattedDate, formattedTime)))
+                        taskVM.onEvent(TaskEvent.UpdateTask(taskId, ToDoDTO(title,description,isComplete, 0L,formattedDate, formattedTime, pickedDate, pickedTime), context))
                         nav.navigate(AppNavigation.TasksScreen().route)
                     }
                 }) {
-                    Log.d("TScreen", "taskId: $taskId")
                     Text(text = if(taskId == "new") "Create Todo" else "Update Todo")
                 }
             }
@@ -206,7 +208,7 @@ fun TodoScreen(
     ){
         timepicker(
             initialTime = LocalTime.now(),
-            title = "Pick a Date",
+            title = "Pick a Time",
             colors = TimePickerDefaults.colors(
                 activeBackgroundColor = MaterialTheme.colorScheme.primaryContainer
             )
