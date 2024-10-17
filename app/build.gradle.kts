@@ -86,4 +86,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
+
+    // Permissions
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
 }
